@@ -792,7 +792,7 @@ function renderCover() {
           <div class="slider-row">
             <span class="slider-end">all equally</span>
             <input type="range" id="recency-slider" min="0" max="100" value="${Math.round(recencyBias * 100)}"
-                   oninput="updateRecency(this.value)">
+                   onchange="updateRecency(this.value)">
             <span class="slider-end">focus on recent</span>
           </div>
         </div>
