@@ -33,104 +33,112 @@
     color: var(--ink);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    padding-top: 3.2rem;
+    padding-top: 0;
   }
 
   /* ═══════════════════════════════
-     TOOLBAR
+     CONTROLS (inline within cover)
      ═══════════════════════════════ */
-  .toolbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 3.2rem;
+  .controls-inline {
+    max-width: 460px;
+    width: 100%;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--ink-08);
+  }
+
+  .controls-slider-area {
+    margin-bottom: 1.2rem;
+  }
+
+  .controls-slider-area label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--ink-50);
+    margin-bottom: 0.6rem;
+    text-align: center;
+  }
+
+  .slider-row {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    padding: 0 1.25rem;
-    background: var(--navy);
-    color: rgba(255,255,255,0.85);
-    z-index: 200;
-    font-size: 0.72rem;
+    gap: 0.6rem;
   }
 
-  .toolbar-sep {
-    width: 1px;
-    height: 1.2rem;
-    background: rgba(255,255,255,0.15);
+  .slider-end {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: var(--ink-20);
+    white-space: nowrap;
   }
 
-  .toolbar button {
+  .controls-slider-area input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 20px;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+  }
+
+  .controls-slider-area input[type="range"]::-webkit-slider-runnable-track {
+    height: 2px;
+    background: var(--ink-08);
+    border-radius: 2px;
+  }
+
+  .controls-slider-area input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--paper);
+    box-shadow: 0 0 0 1px var(--ink-08);
+    cursor: pointer;
+    margin-top: -6px;
+  }
+
+  .controls-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .controls-actions .ctrl-btn {
     font-family: inherit;
     font-size: 0.68rem;
     font-weight: 500;
-    letter-spacing: 0.03em;
-    padding: 0.3rem 0.75rem;
-    border: 1px solid rgba(255,255,255,0.2);
+    letter-spacing: 0.04em;
+    padding: 0.4rem 1.1rem;
+    border: 1px solid var(--ink-08);
     border-radius: 3px;
     background: transparent;
-    color: rgba(255,255,255,0.8);
+    color: var(--ink-50);
     cursor: pointer;
     transition: all 0.15s;
     white-space: nowrap;
   }
 
-  .toolbar button:hover {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
+  .controls-actions .ctrl-btn:hover {
+    border-color: var(--ink-20);
+    color: var(--ink);
   }
 
-  .toolbar .slider-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .controls-actions .ctrl-btn.primary {
+    border-color: var(--gold-muted);
+    color: var(--gold);
   }
 
-  .toolbar .slider-group label {
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.55);
-    white-space: nowrap;
-    letter-spacing: 0.02em;
+  .controls-actions .ctrl-btn.primary:hover {
+    background: rgba(184,146,62,0.06);
   }
 
-  .toolbar .slider-track {
-    position: relative;
-    width: 100px;
-    height: 3px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 2px;
-  }
-
-  .toolbar input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100px;
-    height: 3px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-  }
-
-  .toolbar input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--gold-muted);
-    border: 2px solid var(--navy);
-    cursor: pointer;
-  }
-
-  .toolbar .slider-val {
-    font-size: 0.62rem;
-    color: rgba(255,255,255,0.55);
-    min-width: 4.5rem;
-    text-align: left;
-  }
-
-  .toolbar-spacer { flex: 1; }
-
-  @media print { .toolbar { display: none; } body { padding-top: 0; } }
+  @media print { .controls-inline { display: none; } }
 
   /* ═══════════════════════════════
      COVER
@@ -166,16 +174,6 @@
 
   .cover-geo::before { transform: rotate(0deg); }
   .cover-geo::after { transform: rotate(45deg); }
-
-  .cover-title-ar {
-    font-family: 'Amiri', serif;
-    font-size: 4.5rem;
-    font-weight: 700;
-    color: var(--navy);
-    direction: rtl;
-    line-height: 1.15;
-    margin-bottom: 0.5rem;
-  }
 
   .cover-rule {
     width: 60px;
@@ -559,29 +557,12 @@
   @media screen {
     .print-mode #app { display: none; }
     .print-mode #print-view { display: block; }
-    .print-mode .toolbar { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- ── Toolbar ── -->
-<div class="toolbar no-print">
-  <button onclick="regenerate()">Regenerate</button>
-
-  <span class="toolbar-sep"></span>
-
-  <div class="slider-group">
-    <label for="recency-slider">Recency</label>
-    <input type="range" id="recency-slider" min="0" max="100" value="50"
-           oninput="updateRecency(this.value)">
-    <span class="slider-val" id="recency-label">Balanced</span>
-  </div>
-
-  <span class="toolbar-spacer"></span>
-
-  <button onclick="exportPDF()">Export PDF</button>
-</div>
+<!-- toolbar removed — controls are now inline after the cover -->
 
 <div id="app"></div>
 <div id="print-view"></div>
@@ -799,7 +780,6 @@ function renderCover() {
   return `
     <div class="cover">
       <div class="cover-geo"><div></div></div>
-      <div class="cover-title-ar">الحروف العربيّة</div>
       <div class="cover-rule"></div>
       <div class="cover-title-en">The Arabic Alphabet</div>
       <div class="cover-subtitle">A Spaced Repetition Exercise Book</div>
@@ -809,9 +789,24 @@ function renderCover() {
           <li>Each letter has three stages: pairs, triples, then quads.</li>
           <li>The new letter appears in <span style="color:var(--terra);font-weight:500">red</span>, mixed with previously learned letters.</li>
           <li>Read each row aloud, right to left, naming every letter.</li>
-          <li>Recently learned letters appear more often; older letters still surface to prevent forgetting.</li>
+          <li>Recently learned letters appear more often; older letters still surface to prevent forgetting. Adjust this balance with the slider below.</li>
           <li>Go at the learner's pace. Repeat any stage before moving on.</li>
         </ul>
+      </div>
+      <div class="controls-inline no-print">
+        <div class="controls-slider-area">
+          <label>How often should older letters reappear?</label>
+          <div class="slider-row">
+            <span class="slider-end">all equally</span>
+            <input type="range" id="recency-slider" min="0" max="100" value="${Math.round(recencyBias * 100)}"
+                   oninput="updateRecency(this.value)">
+            <span class="slider-end">focus on recent</span>
+          </div>
+        </div>
+        <div class="controls-actions">
+          <button class="ctrl-btn" onclick="regenerate()">Regenerate</button>
+          <button class="ctrl-btn primary" onclick="exportPDF()">Export PDF</button>
+        </div>
       </div>
     </div>`;
 }
@@ -866,17 +861,21 @@ function renderReference() {
     </div>`;
 }
 
-function render(seed) {
+function renderLetters(seed) {
   const data = generateAllData(seed);
-  let html = renderCover();
+  let html = '';
   data.forEach((d, i) => {
     html += `<div class="page">${renderLetter(d, i + 1)}</div>`;
   });
   html += renderReference();
-  document.getElementById('app').innerHTML = html;
-
-  // Also render the condensed print view
+  document.getElementById('letters').innerHTML = html;
   renderPrintView(data);
+}
+
+function render(seed) {
+  document.getElementById('app').innerHTML =
+    renderCover() + '<div id="letters"></div>';
+  renderLetters(seed);
 }
 
 function renderPrintView(data) {
@@ -915,18 +914,12 @@ let currentSeed = 42;
 
 function updateRecency(val) {
   recencyBias = val / 100;
-  const el = document.getElementById('recency-label');
-  if (recencyBias < 0.15) el.textContent = 'Even';
-  else if (recencyBias < 0.4) el.textContent = 'Slight';
-  else if (recencyBias < 0.6) el.textContent = 'Balanced';
-  else if (recencyBias < 0.8) el.textContent = 'Recent focus';
-  else el.textContent = 'Strong';
-  render(currentSeed);
+  renderLetters(currentSeed);
 }
 
 function regenerate() {
   currentSeed = Math.floor(Math.random() * 100000);
-  render(currentSeed);
+  renderLetters(currentSeed);
 }
 
 function exportPDF() {
