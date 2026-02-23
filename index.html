@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arabic Alphabet — Spaced Repetition Exercises</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --navy: #0c1e2e;
+    --navy-mid: #1a3347;
+    --navy-light: #2a4a63;
+    --warm: #f6f1ea;
+    --warm-deep: #ede5d8;
+    --paper: #faf8f5;
+    --gold: #b8923e;
+    --gold-muted: #c9a96a;
+    --terra: #b5432a;
+    --terra-light: #d4654e;
+    --ink: #1c1c1c;
+    --ink-50: rgba(28,28,28,0.5);
+    --ink-20: rgba(28,28,28,0.2);
+    --ink-08: rgba(28,28,28,0.08);
+    --ink-04: rgba(28,28,28,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding-top: 3.2rem;
+  }
+
+  /* ═══════════════════════════════
+     TOOLBAR
+     ═══════════════════════════════ */
+  .toolbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0 1.25rem;
+    background: var(--navy);
+    color: rgba(255,255,255,0.85);
+    z-index: 200;
+    font-size: 0.72rem;
+  }
+
+  .toolbar-sep {
+    width: 1px;
+    height: 1.2rem;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .toolbar button {
+    font-family: inherit;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .toolbar button:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+  }
+
+  .toolbar .slider-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .toolbar .slider-group label {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.55);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  .toolbar .slider-track {
+    position: relative;
+    width: 100px;
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+  }
+
+  .toolbar input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px;
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .toolbar input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold-muted);
+    border: 2px solid var(--navy);
+    cursor: pointer;
+  }
+
+  .toolbar .slider-val {
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.55);
+    min-width: 4.5rem;
+    text-align: left;
+  }
+
+  .toolbar-spacer { flex: 1; }
+
+  @media print { .toolbar { display: none; } body { padding-top: 0; } }
+
+  /* ═══════════════════════════════
+     COVER
+     ═══════════════════════════════ */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    page-break-after: always;
+    position: relative;
+    background: var(--paper);
+  }
+
+  /* Geometric accent — subtle 8-pointed star motif */
+  .cover-geo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 2.5rem;
+    position: relative;
+    opacity: 0.18;
+  }
+
+  .cover-geo::before,
+  .cover-geo::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 2px solid var(--navy);
+  }
+
+  .cover-geo::before { transform: rotate(0deg); }
+  .cover-geo::after { transform: rotate(45deg); }
+
+  .cover-title-ar {
+    font-family: 'Amiri', serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--navy);
+    direction: rtl;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+
+  .cover-rule {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 1rem auto 1rem;
+  }
+
+  .cover-title-en {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--navy-light);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .cover-subtitle {
+    font-size: 0.78rem;
+    color: var(--ink-50);
+    font-weight: 300;
+    margin-bottom: 3.5rem;
+  }
+
+  /* (alphabet listing removed from cover) */
+
+  .cover-instructions {
+    max-width: 460px;
+    width: 100%;
+  }
+
+  .cover-instructions h3 {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-50);
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+
+  .cover-instructions ul {
+    list-style: none;
+    font-size: 0.78rem;
+    color: var(--ink-50);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .cover-instructions li {
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .cover-instructions li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ═══════════════════════════════
+     LETTER PAGES
+     ═══════════════════════════════ */
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    page-break-after: always;
+  }
+
+  .letter-group {
+    position: relative;
+  }
+
+  /* ── Letter hero ── */
+  .letter-hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .letter-display {
+    font-family: 'Amiri', serif;
+    font-size: 5.5rem;
+    font-weight: 700;
+    color: var(--navy);
+    direction: rtl;
+    line-height: 1;
+    flex-shrink: 0;
+    position: relative;
+    width: 5rem;
+    text-align: center;
+  }
+
+  .letter-display::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  .letter-info {
+    padding-top: 0.6rem;
+  }
+
+  .letter-num {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-50);
+    margin-bottom: 0.15rem;
+  }
+
+  .letter-name {
+    font-family: 'Amiri', serif;
+    font-size: 1.5rem;
+    color: var(--navy);
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+  }
+
+  .letter-pool {
+    direction: rtl;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: baseline;
+  }
+
+  .letter-pool span {
+    font-family: 'Amiri', serif;
+    font-size: 1rem;
+    color: var(--ink-20);
+    /* Force isolated form — prevent Arabic ligature joining */
+    unicode-bidi: bidi-override;
+    direction: rtl;
+  }
+
+  /* ── Sub-levels ── */
+  .sublevels {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sublevel {
+    /* intentionally minimal container */
+  }
+
+  .sublevel-tag {
+    display: inline-block;
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-50);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--ink-08);
+  }
+
+  /* ── Exercise rows ── */
+  .rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    direction: rtl;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--ink-04);
+  }
+
+  .row:last-child {
+    border-bottom: none;
+  }
+
+  .row-num {
+    font-size: 0.5rem;
+    font-weight: 500;
+    color: var(--ink-20);
+    width: 1rem;
+    text-align: center;
+    direction: ltr;
+    margin-left: 0.25rem;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row-letters {
+    display: flex;
+    direction: rtl;
+    flex: 1;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .cell {
+    font-family: 'Amiri', serif;
+    font-size: 2rem;
+    width: 3.2rem;
+    text-align: center;
+    line-height: 1.5;
+    color: var(--navy);
+    transition: color 0.1s;
+  }
+
+  .cell.new {
+    color: var(--terra);
+  }
+
+  /* ═══════════════════════════════
+     REFERENCE
+     ═══════════════════════════════ */
+  .reference {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    page-break-before: always;
+  }
+
+  .reference h2 {
+    font-family: 'Amiri', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-align: center;
+    color: var(--navy);
+    margin-bottom: 0.25rem;
+  }
+
+  .reference-sub {
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--ink-20);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.35rem;
+    direction: rtl;
+  }
+
+  .ref-card {
+    text-align: center;
+    padding: 0.6rem 0.2rem;
+    border: 1px solid var(--ink-08);
+    border-radius: 2px;
+    background: white;
+  }
+
+  .ref-card-num {
+    font-size: 0.45rem;
+    font-weight: 600;
+    color: var(--ink-20);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .ref-card-letter {
+    font-family: 'Amiri', serif;
+    font-size: 2.2rem;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .ref-card-name {
+    font-size: 0.58rem;
+    color: var(--ink-50);
+    font-weight: 300;
+  }
+
+  /* ═══════════════════════════════
+     PRINT VIEW (condensed)
+     ═══════════════════════════════ */
+  #print-view { display: none; }
+
+  .pv {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
+  .pv-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .pv-title-ar {
+    font-family: 'Amiri', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #111;
+    direction: rtl;
+  }
+
+  .pv-title-en {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #999;
+    margin-top: 0.15rem;
+  }
+
+  .pv-letter {
+    page-break-inside: avoid;
+    margin-bottom: 1.2rem;
+  }
+
+  .pv-letter-head {
+    text-align: center;
+    margin-bottom: 0.25rem;
+  }
+
+  .pv-letter-glyph {
+    font-family: 'Amiri', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111;
+    direction: rtl;
+  }
+
+  .pv-letter-name {
+    font-size: 0.55rem;
+    color: #999;
+    letter-spacing: 0.05em;
+  }
+
+  .pv-sub {
+    direction: rtl;
+    text-align: center;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #ddd;
+    font-family: 'Amiri', serif;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #222;
+    word-spacing: 0.1em;
+  }
+
+  .pv-sub:last-child { border-bottom: none; }
+
+  .pv-sep {
+    color: #ccc;
+    margin: 0 0.15em;
+    font-weight: 300;
+  }
+
+  .pv-new {
+    color: #b5432a;
+    font-weight: 700;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    #app { display: none; }
+    .toolbar { display: none; }
+    #print-view { display: block; }
+  }
+
+  @media screen {
+    .print-mode #app { display: none; }
+    .print-mode #print-view { display: block; }
+    .print-mode .toolbar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Toolbar ── -->
+<div class="toolbar no-print">
+  <button onclick="regenerate()">Regenerate</button>
+
+  <span class="toolbar-sep"></span>
+
+  <div class="slider-group">
+    <label for="recency-slider">Recency</label>
+    <input type="range" id="recency-slider" min="0" max="100" value="50"
+           oninput="updateRecency(this.value)">
+    <span class="slider-val" id="recency-label">Balanced</span>
+  </div>
+
+  <span class="toolbar-spacer"></span>
+
+  <button onclick="exportPDF()">Export PDF</button>
+</div>
+
+<div id="app"></div>
+<div id="print-view"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// METHODOLOGICAL ENGINE v2
+// ═══════════════════════════════════════════════════════════════
+//
+// STRUCTURE:
+//   Each of the 27 letters gets 3 sub-levels:
+//     Sub-level 1: chunk size 2 (easy pairs — low cognitive load, first exposure)
+//     Sub-level 2: chunk size 3 (medium — more distractors per row)
+//     Sub-level 3: chunk size 4 (hardest for this letter — max discrimination)
+//   Each sub-level has 5 exercises (rows).
+//   Total: 27 letters * 3 sub-levels * 5 rows = 405 rows.
+//
+// CORE PRINCIPLES:
+//   1. Active recall: student identifies each letter, not passively sees it
+//   2. Spaced repetition with recency weighting: review letters weighted by
+//      how recently they were learned
+//   3. Incremental difficulty: chunk size 2->3->4 within each letter
+//   4. No isolated introduction: new letter always mixed with known letters
+//
+// ═══════════════════════════════════════════════════════════════
+
+const ALPHABET = [
+  "ا","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","هـ","و","ي"
+];
+
+const LETTER_NAMES = [
+  "Alif","Baa","Taa","Thaa","Jiim","Haa","Khaa","Daal","Dhaal","Raa","Zaay",
+  "Siin","Shiin","Saad","Daad","Taa'","Dhaa'","'Ayn","Ghayn","Faa","Qaaf",
+  "Kaaf","Laam","Miim","Nuun","Haa'","Waaw","Yaa"
+];
+
+const CHUNK_SIZES = [2, 3, 4];
+const NUM_EXERCISES = 5;
+
+// ── PRNG ──
+function seededRandom(seed) {
+  let t = seed + 0x6D2B79F5;
+  return function() {
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffle(arr, rng) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function weightedSample(items, weights, count, rng) {
+  const result = [];
+  const avail = items.map((item, i) => ({ item, weight: weights[i] }));
+  for (let n = 0; n < count && avail.length > 0; n++) {
+    const total = avail.reduce((s, a) => s + a.weight, 0);
+    let r = rng() * total;
+    let picked = avail.length - 1;
+    for (let i = 0; i < avail.length; i++) {
+      r -= avail[i].weight;
+      if (r <= 0) { picked = i; break; }
+    }
+    result.push(avail[picked].item);
+    avail.splice(picked, 1);
+  }
+  return result;
+}
+
+// ── Recency bias (slider-controlled) ──
+let recencyBias = 0.5;
+
+function recencyWeights(reviewLetters) {
+  if (reviewLetters.length === 0) return [];
+  if (reviewLetters.length === 1) return [1];
+  const floor = 1.0 - recencyBias * 0.98;
+  const exp = 1 + recencyBias * 2;
+  return reviewLetters.map((_, i) => {
+    const t = i / (reviewLetters.length - 1);
+    return floor + (1 - floor) * Math.pow(t, exp);
+  });
+}
+
+// ── Unique permutations of a multiset ──
+function uniquePermutations(items) {
+  const results = [];
+  const sorted = [...items].sort();
+  function permute(cur, rem) {
+    if (rem.length === 0) { results.push([...cur]); return; }
+    let prev = null;
+    for (let i = 0; i < rem.length; i++) {
+      if (rem[i] === prev) continue;
+      prev = rem[i];
+      cur.push(rem[i]);
+      permute(cur, [...rem.slice(0, i), ...rem.slice(i + 1)]);
+      cur.pop();
+    }
+  }
+  permute([], sorted);
+  return results;
+}
+
+// ── Candidate composition ──
+function candidateComposition(newLetter, reviewLetters, weights, reviewSlots, rng, seen, exIdx) {
+  if (reviewLetters.length === 0) return [newLetter];
+
+  if (reviewLetters.length < reviewSlots) {
+    const fill = [newLetter, ...reviewLetters];
+    const rem = reviewSlots - reviewLetters.length;
+    for (let i = 0; i < rem; i++) fill.push(reviewLetters[i % reviewLetters.length]);
+    reviewLetters.forEach(l => seen.add(l));
+    return fill;
+  }
+
+  let picks;
+  const unseen = reviewLetters.filter(l => !seen.has(l));
+
+  if (exIdx >= NUM_EXERCISES - 2 && unseen.length > 0) {
+    const fc = Math.min(reviewSlots, unseen.length);
+    const forced = shuffle(unseen, rng).slice(0, fc);
+    forced.forEach(l => seen.add(l));
+    if (fc < reviewSlots) {
+      const rest = reviewLetters.filter(l => !forced.includes(l));
+      const rw = recencyWeights(rest);
+      picks = [...forced, ...weightedSample(rest, rw, reviewSlots - fc, rng)];
+    } else { picks = forced; }
+  } else {
+    picks = weightedSample(reviewLetters, weights, reviewSlots, rng);
+    picks.forEach(l => seen.add(l));
+  }
+
+  return [newLetter, ...picks];
+}
+
+// ── Generate one sub-level with uniqueness ──
+function generateSubLevel(letterIdx, chunkSize, rng) {
+  const newLetter = ALPHABET[letterIdx];
+  const available = ALPHABET.slice(0, letterIdx + 1);
+  const review = available.filter(l => l !== newLetter);
+  const weights = recencyWeights(review);
+  const rSlots = chunkSize - 1;
+  const poolTiny = review.length < chunkSize;
+
+  if (poolTiny) {
+    const comp = candidateComposition(newLetter, review, weights, rSlots, rng, new Set(), 0);
+    const allPerms = uniquePermutations(comp);
+    let valid = allPerms;
+    const distinct = new Set(comp).size;
+    if (chunkSize > 2 && distinct === chunkSize) {
+      valid = allPerms.filter(p => {
+        const ix = p.map(l => ALPHABET.indexOf(l));
+        const asc = ix.every((v, i, a) => i === 0 || v >= a[i-1]);
+        const dsc = ix.every((v, i, a) => i === 0 || v <= a[i-1]);
+        return !asc && !dsc;
+      });
+      if (valid.length === 0) valid = allPerms;
+    }
+    const sh = shuffle(valid, rng);
+    return Array.from({ length: NUM_EXERCISES }, (_, i) => [...sh[i % sh.length]]);
+  }
+
+  const chunks = [];
+  const seenKeys = new Set();
+  const seenReview = new Set();
+
+  for (let ex = 0; ex < NUM_EXERCISES; ex++) {
+    let best = null;
+    for (let att = 0; att < 80; att++) {
+      const comp = candidateComposition(newLetter, review, weights, rSlots, rng, seenReview, ex);
+      const cand = shuffle(comp, rng);
+      const dist = new Set(cand).size;
+      if (chunkSize > 2 && dist === chunkSize) {
+        const ix = cand.map(l => ALPHABET.indexOf(l));
+        if (ix.every((v, i, a) => i === 0 || v >= a[i-1]) ||
+            ix.every((v, i, a) => i === 0 || v <= a[i-1])) continue;
+      }
+      const key = cand.join(',');
+      if (!seenKeys.has(key)) { seenKeys.add(key); best = cand; break; }
+      best = cand;
+    }
+    if (!best) best = shuffle(candidateComposition(newLetter, review, weights, rSlots, rng, seenReview, ex), rng);
+    chunks.push(best);
+  }
+  return chunks;
+}
+
+function generateAllData(seed) {
+  const rng = seededRandom(seed || 42);
+  const letters = [];
+  for (let i = 1; i < ALPHABET.length; i++) {
+    letters.push({
+      idx: i,
+      letter: ALPHABET[i],
+      name: LETTER_NAMES[i],
+      pool: ALPHABET.slice(0, i + 1),
+      subs: CHUNK_SIZES.map(cs => ({ size: cs, chunks: generateSubLevel(i, cs, rng) }))
+    });
+  }
+  return letters;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDERING
+// ═══════════════════════════════════════════════════════════════
+
+const SUB_NAMES = ['i', 'ii', 'iii'];
+
+function renderCover() {
+  return `
+    <div class="cover">
+      <div class="cover-geo"><div></div></div>
+      <div class="cover-title-ar">الحروف العربيّة</div>
+      <div class="cover-rule"></div>
+      <div class="cover-title-en">The Arabic Alphabet</div>
+      <div class="cover-subtitle">A Spaced Repetition Exercise Book</div>
+      <div class="cover-instructions">
+        <h3>How to Use</h3>
+        <ul>
+          <li>Each letter has three stages: pairs, triples, then quads.</li>
+          <li>The new letter appears in <span style="color:var(--terra);font-weight:500">red</span>, mixed with previously learned letters.</li>
+          <li>Read each row aloud, right to left, naming every letter.</li>
+          <li>Recently learned letters appear more often; older letters still surface to prevent forgetting.</li>
+          <li>Go at the learner's pace. Repeat any stage before moving on.</li>
+        </ul>
+      </div>
+    </div>`;
+}
+
+function renderLetter(d, num) {
+  const pool = d.pool.slice().reverse().map(l =>
+    `<span>\u2068${l}\u2069</span>`
+  ).join('');
+
+  const subs = d.subs.map((s, si) => {
+    const rows = s.chunks.map((chunk, ri) => {
+      const cells = chunk.map(l =>
+        `<span class="cell${l === d.letter ? ' new' : ''}">${l}</span>`
+      ).join('');
+      return `<div class="row"><div class="row-letters">${cells}</div><div class="row-num">${ri + 1}</div></div>`;
+    }).join('');
+
+    return `
+      <div class="sublevel">
+        <div class="sublevel-tag">${SUB_NAMES[si]} — size ${s.size}</div>
+        <div class="rows">${rows}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="letter-group">
+      <div class="letter-hero">
+        <div class="letter-display">${d.letter}</div>
+        <div class="letter-info">
+          <div class="letter-num">Letter ${num} of 27</div>
+          <div class="letter-name">${d.name}</div>
+          <div class="letter-pool">${pool}</div>
+        </div>
+      </div>
+      <div class="sublevels">${subs}</div>
+    </div>`;
+}
+
+function renderReference() {
+  const cards = ALPHABET.map((l, i) => `
+    <div class="ref-card">
+      <div class="ref-card-num">${i === 0 ? 'base' : i}</div>
+      <div class="ref-card-letter">${l}</div>
+      <div class="ref-card-name">${LETTER_NAMES[i]}</div>
+    </div>`).join('');
+
+  return `
+    <div class="reference">
+      <h2>Reference</h2>
+      <p class="reference-sub">Traditional order, right to left</p>
+      <div class="ref-grid">${cards}</div>
+    </div>`;
+}
+
+function render(seed) {
+  const data = generateAllData(seed);
+  let html = renderCover();
+  data.forEach((d, i) => {
+    html += `<div class="page">${renderLetter(d, i + 1)}</div>`;
+  });
+  html += renderReference();
+  document.getElementById('app').innerHTML = html;
+
+  // Also render the condensed print view
+  renderPrintView(data);
+}
+
+function renderPrintView(data) {
+  let html = `<div class="pv">
+    <div class="pv-title">
+      <div class="pv-title-ar">الحروف العربيّة</div>
+      <div class="pv-title-en">Spaced Repetition Exercises</div>
+    </div>`;
+
+  data.forEach(d => {
+    html += `<div class="pv-letter">
+      <div class="pv-letter-head">
+        <span class="pv-letter-glyph">${d.letter}</span>
+        <span class="pv-letter-name"> ${d.name}</span>
+      </div>`;
+
+    d.subs.forEach(s => {
+      // Each sub-level: all 5 chunks on one line, separated by |
+      const chunks = s.chunks.map(chunk => {
+        return chunk.map(l =>
+          l === d.letter ? `<span class="pv-new">${l}</span>` : l
+        ).join('\u2009'); // thin space between letters in a chunk
+      }).join('<span class="pv-sep">\u2009|\u2009</span>');
+
+      html += `<div class="pv-sub">${chunks}</div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById('print-view').innerHTML = html;
+}
+
+let currentSeed = 42;
+
+function updateRecency(val) {
+  recencyBias = val / 100;
+  const el = document.getElementById('recency-label');
+  if (recencyBias < 0.15) el.textContent = 'Even';
+  else if (recencyBias < 0.4) el.textContent = 'Slight';
+  else if (recencyBias < 0.6) el.textContent = 'Balanced';
+  else if (recencyBias < 0.8) el.textContent = 'Recent focus';
+  else el.textContent = 'Strong';
+  render(currentSeed);
+}
+
+function regenerate() {
+  currentSeed = Math.floor(Math.random() * 100000);
+  render(currentSeed);
+}
+
+function exportPDF() {
+  window.print();
+}
+
+document.addEventListener('DOMContentLoaded', () => render(currentSeed));
+</script>
+
+</body>
+</html>
