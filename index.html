@@ -411,8 +411,8 @@
     cursor: pointer;
   }
 
-  .cell:active {
-    opacity: 0.6;
+  .cell.speaking {
+    animation: cell-speak 0.35s ease-out;
   }
 
   .cell.new {
@@ -653,7 +653,7 @@ const AUDIO_FILES = {
 };
 
 const audioCache = {};
-function playLetter(letter) {
+function playLetter(letter, el) {
   if (!AUDIO_FILES[letter]) return;
   if (!audioCache[letter]) {
     audioCache[letter] = new Audio('audio/' + AUDIO_FILES[letter]);
@@ -661,6 +661,12 @@ function playLetter(letter) {
   const a = audioCache[letter];
   a.currentTime = 0;
   a.play();
+  if (el) {
+    el.classList.remove('speaking');
+    void el.offsetWidth;
+    el.classList.add('speaking');
+    el.addEventListener('animationend', () => el.classList.remove('speaking'), { once: true });
+  }
 }
 
 const CHUNK_SIZES = [2, 3, 4];
@@ -946,7 +952,7 @@ function renderLetter(d, num) {
   const subs = d.subs.map((s, si) => {
     const rows = s.chunks.map((chunk, ri) => {
       const cells = chunk.map(l =>
-        `<span class="cell" onclick="playLetter('${l}')">${l}</span>`
+        `<span class="cell" onclick="playLetter('${l}',this)">${l}</span>`
       ).join('');
       return `<div class="row"><div class="row-letters">${cells}</div><div class="row-num">${ri + 1}</div></div>`;
     }).join('');
@@ -961,7 +967,7 @@ function renderLetter(d, num) {
   return `
     <div class="letter-group">
       <div class="letter-hero">
-        <div class="letter-display" onclick="playLetter('${d.letter}')">${d.letter}</div>
+        <div class="letter-display" onclick="playLetter('${d.letter}',this)">${d.letter}</div>
         <div class="letter-info">
           <div class="letter-num">Letter ${num} of 28</div>
           <div class="letter-name">${d.name}</div>
