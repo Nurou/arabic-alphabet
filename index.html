@@ -8,21 +8,23 @@
   @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
   :root {
-    --navy: #0c1e2e;
-    --navy-mid: #1a3347;
-    --navy-light: #2a4a63;
-    --warm: #f6f1ea;
-    --warm-deep: #ede5d8;
-    --paper: #faf8f5;
-    --gold: #b8923e;
-    --gold-muted: #c9a96a;
-    --terra: #b5432a;
-    --terra-light: #d4654e;
-    --ink: #1c1c1c;
-    --ink-50: rgba(28,28,28,0.5);
-    --ink-20: rgba(28,28,28,0.2);
-    --ink-08: rgba(28,28,28,0.08);
-    --ink-04: rgba(28,28,28,0.04);
+    --navy: oklch(0.22 0.04 250);
+    --navy-mid: oklch(0.32 0.04 250);
+    --navy-light: oklch(0.40 0.05 250);
+    --warm: oklch(0.95 0.01 80);
+    --warm-deep: oklch(0.92 0.015 80);
+    --paper: oklch(0.98 0.005 90);
+    --gold: oklch(0.62 0.13 80);
+    --gold-muted: oklch(0.68 0.10 80);
+    --terra: oklch(0.52 0.17 30);
+    --terra-light: oklch(0.60 0.15 30);
+    --ink: oklch(0.20 0 0);
+    --ink-70: oklch(0.38 0 0);
+    --ink-50: oklch(0.48 0 0);
+    --ink-40: oklch(0.55 0 0);
+    --ink-20: oklch(0.72 0 0);
+    --ink-08: oklch(0.90 0.003 90);
+    --ink-04: oklch(0.94 0.003 90);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,8 +56,8 @@
   .controls-slider-area label {
     display: block;
     font-size: 0.72rem;
-    font-weight: 300;
-    color: var(--ink-50);
+    font-weight: 400;
+    color: var(--ink-70);
     margin-bottom: 0.6rem;
     text-align: center;
   }
@@ -69,7 +71,7 @@
   .slider-end {
     font-size: 0.6rem;
     font-weight: 400;
-    color: var(--ink-20);
+    color: var(--ink-50);
     white-space: nowrap;
   }
 
@@ -118,14 +120,14 @@
     border: 1px solid var(--ink-08);
     border-radius: 3px;
     background: transparent;
-    color: var(--ink-50);
+    color: var(--ink-70);
     cursor: pointer;
     transition: all 0.15s;
     white-space: nowrap;
   }
 
   .controls-actions .ctrl-btn:hover {
-    border-color: var(--ink-20);
+    border-color: var(--ink-40);
     color: var(--ink);
   }
 
@@ -135,7 +137,7 @@
   }
 
   .controls-actions .ctrl-btn.primary:hover {
-    background: rgba(184,146,62,0.06);
+    background: oklch(0.62 0.13 80 / 0.08);
   }
 
   @media print { .controls-inline { display: none; } }
@@ -160,7 +162,7 @@
     width: 52px;
     height: 52px;
     margin-bottom: 2.5rem;
-    opacity: 0.15;
+    opacity: 0.3;
   }
 
   .cover-geo svg {
@@ -186,7 +188,7 @@
 
   .cover-subtitle {
     font-size: 0.78rem;
-    color: var(--ink-50);
+    color: var(--ink-70);
     font-weight: 300;
     margin-bottom: 3.5rem;
   }
@@ -203,7 +205,7 @@
     font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--ink-50);
+    color: var(--ink-70);
     margin-bottom: 0.75rem;
     text-align: center;
   }
@@ -211,7 +213,7 @@
   .cover-instructions ul {
     list-style: none;
     font-size: 0.78rem;
-    color: var(--ink-50);
+    color: var(--ink-70);
     font-weight: 300;
     line-height: 1.8;
   }
@@ -254,6 +256,18 @@
     margin-bottom: 2rem;
   }
 
+  @keyframes letter-speak {
+    0%   { transform: scale(1);    color: var(--navy); }
+    20%  { transform: scale(1.12); color: var(--gold); }
+    100% { transform: scale(1);    color: var(--navy); }
+  }
+
+  @keyframes cell-speak {
+    0%   { transform: scale(1);    color: var(--navy); }
+    20%  { transform: scale(1.18); color: var(--gold); }
+    100% { transform: scale(1);    color: var(--navy); }
+  }
+
   .letter-display {
     font-family: 'Amiri', serif;
     font-size: 5.5rem;
@@ -265,6 +279,15 @@
     position: relative;
     width: 5rem;
     text-align: center;
+    cursor: pointer;
+  }
+
+  .letter-display:hover {
+    opacity: 0.8;
+  }
+
+  .letter-display.speaking {
+    animation: letter-speak 0.45s ease-out;
   }
 
   .letter-display::after {
@@ -385,6 +408,11 @@
     line-height: 1.5;
     color: var(--navy);
     transition: color 0.1s;
+    cursor: pointer;
+  }
+
+  .cell:active {
+    opacity: 0.6;
   }
 
   .cell.new {
@@ -566,12 +594,12 @@
 // ═══════════════════════════════════════════════════════════════
 //
 // STRUCTURE:
-//   Each of the 27 letters gets 3 sub-levels:
+//   Each of the 28 letters gets 3 sub-levels:
 //     Sub-level 1: chunk size 2 (easy pairs — low cognitive load, first exposure)
 //     Sub-level 2: chunk size 3 (medium — more distractors per row)
 //     Sub-level 3: chunk size 4 (hardest for this letter — max discrimination)
 //   Each sub-level has 5 exercises (rows).
-//   Total: 27 letters * 3 sub-levels * 5 rows = 405 rows.
+//   Total: 28 letters * 3 sub-levels * 5 rows = 420 rows.
 //
 // CORE PRINCIPLES:
 //   1. Active recall: student identifies each letter, not passively sees it
@@ -583,14 +611,57 @@
 // ═══════════════════════════════════════════════════════════════
 
 const ALPHABET = [
-  "ا","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","هـ","و","ي"
+  "ا","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","و","هـ","ي","ء"
 ];
 
 const LETTER_NAMES = [
   "Alif","Baa","Taa","Thaa","Jiim","Haa","Khaa","Daal","Dhaal","Raa","Zaay",
   "Siin","Shiin","Saad","Daad","Taa'","Dhaa'","'Ayn","Ghayn","Faa","Qaaf",
-  "Kaaf","Laam","Miim","Nuun","Haa'","Waaw","Yaa"
+  "Kaaf","Laam","Miim","Nuun","Waaw","Haa'","Yaa","Hamza"
 ];
+
+const AUDIO_FILES = {
+  "ا": "xuruuf00000011.mp3",
+  "ب": "xuruuf00000073.mp3",
+  "ت": "xuruuf00000152.mp3",
+  "ث": "xuruuf00000213.mp3",
+  "ج": "xuruuf00000276.mp3",
+  "ح": "xuruuf00000331.mp3",
+  "خ": "xuruuf00000384.mp3",
+  "د": "xuruuf00000452.mp3",
+  "ذ": "xuruuf00000520.mp3",
+  "ر": "xuruuf00000587.mp3",
+  "ز": "xuruuf00000658.mp3",
+  "س": "xuruuf00000714.mp3",
+  "ش": "xuruuf00000771.mp3",
+  "ص": "xuruuf00000833.mp3",
+  "ض": "xuruuf00000886.mp3",
+  "ط": "xuruuf00000958.mp3",
+  "ظ": "xuruuf00001012.mp3",
+  "ع": "xuruuf00001067.mp3",
+  "غ": "xuruuf00001117.mp3",
+  "ف": "xuruuf00001173.mp3",
+  "ق": "xuruuf00001227.mp3",
+  "ك": "xuruuf00001275.mp3",
+  "ل": "xuruuf00001325.mp3",
+  "م": "xuruuf00001379.mp3",
+  "ن": "xuruuf00001433.mp3",
+  "هـ": "xuruuf00001488.mp3",
+  "و": "xuruuf00001539.mp3",
+  "ي": "xuruuf00001594.mp3",
+  "ء": "xuruuf00001648.mp3"
+};
+
+const audioCache = {};
+function playLetter(letter) {
+  if (!AUDIO_FILES[letter]) return;
+  if (!audioCache[letter]) {
+    audioCache[letter] = new Audio('audio/' + AUDIO_FILES[letter]);
+  }
+  const a = audioCache[letter];
+  a.currentTime = 0;
+  a.play();
+}
 
 const CHUNK_SIZES = [2, 3, 4];
 const NUM_EXERCISES = 5;
@@ -723,26 +794,89 @@ function generateSubLevel(letterIdx, chunkSize, rng) {
     return Array.from({ length: NUM_EXERCISES }, (_, i) => [...sh[i % sh.length]]);
   }
 
+  // ── Position schedule: new letter visits every slot across 5 rows ──
+  const posSchedule = [];
+  for (let i = 0; i < NUM_EXERCISES; i++) posSchedule.push(i % chunkSize);
+  // Shuffle the schedule so order is random
+  for (let i = posSchedule.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [posSchedule[i], posSchedule[j]] = [posSchedule[j], posSchedule[i]];
+  }
+
+  // ── For pairs: pick unique review letters when pool is large enough ──
+  let pairReviewPicks = null;
+  if (chunkSize === 2) {
+    if (review.length >= NUM_EXERCISES) {
+      pairReviewPicks = weightedSample(review, weights, NUM_EXERCISES, rng);
+    } else {
+      // Pick all unique, then cycle to fill
+      const unique = weightedSample(review, weights, review.length, rng);
+      pairReviewPicks = [];
+      for (let i = 0; i < NUM_EXERCISES; i++) pairReviewPicks.push(unique[i % unique.length]);
+      // Shuffle so the cycling isn't obvious
+      for (let i = pairReviewPicks.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [pairReviewPicks[i], pairReviewPicks[j]] = [pairReviewPicks[j], pairReviewPicks[i]];
+      }
+    }
+  }
+
   const chunks = [];
   const seenKeys = new Set();
   const seenReview = new Set();
 
   for (let ex = 0; ex < NUM_EXERCISES; ex++) {
+    const newPos = posSchedule[ex];
     let best = null;
+
     for (let att = 0; att < 80; att++) {
-      const comp = candidateComposition(newLetter, review, weights, rSlots, rng, seenReview, ex);
-      const cand = shuffle(comp, rng);
+      // Pick review letters for this row
+      let picks;
+      if (pairReviewPicks) {
+        picks = [pairReviewPicks[ex]];
+      } else {
+        picks = candidateComposition(newLetter, review, weights, rSlots, rng, seenReview, ex);
+        // candidateComposition returns [newLetter, ...reviewPicks], extract just review
+        picks = picks.filter(l => l !== newLetter);
+        // If we got fewer review picks than needed (shouldn't happen in large pool), pad
+        while (picks.length < rSlots) picks.push(review[Math.floor(rng() * review.length)]);
+      }
+
+      // Place new letter at scheduled position, fill others with review picks
+      const cand = new Array(chunkSize);
+      cand[newPos] = newLetter;
+      let pi = 0;
+      for (let s = 0; s < chunkSize; s++) {
+        if (s === newPos) continue;
+        cand[s] = picks[pi++];
+      }
+
+      // For triples/quads, reject sorted runs
       const dist = new Set(cand).size;
       if (chunkSize > 2 && dist === chunkSize) {
         const ix = cand.map(l => ALPHABET.indexOf(l));
         if (ix.every((v, i, a) => i === 0 || v >= a[i-1]) ||
             ix.every((v, i, a) => i === 0 || v <= a[i-1])) continue;
       }
+
       const key = cand.join(',');
       if (!seenKeys.has(key)) { seenKeys.add(key); best = cand; break; }
       best = cand;
     }
-    if (!best) best = shuffle(candidateComposition(newLetter, review, weights, rSlots, rng, seenReview, ex), rng);
+
+    if (!best) {
+      // Fallback: just place new letter at scheduled position with random review
+      const fb = new Array(chunkSize);
+      fb[newPos] = newLetter;
+      const fbPicks = pairReviewPicks ? [pairReviewPicks[ex]]
+        : weightedSample(review, weights, rSlots, rng);
+      let pi = 0;
+      for (let s = 0; s < chunkSize; s++) {
+        if (s === newPos) continue;
+        fb[s] = fbPicks[pi++];
+      }
+      best = fb;
+    }
     chunks.push(best);
   }
   return chunks;
@@ -780,7 +914,7 @@ function renderCover() {
         <h3>How to Use</h3>
         <ul>
           <li>Each letter has three stages: pairs, triples, then quads.</li>
-          <li>The new letter appears in <span style="color:var(--terra);font-weight:500">red</span>, mixed with previously learned letters.</li>
+          <li>The new letter is mixed with previously learned letters — no colour hint.</li>
           <li>Read each row aloud, right to left, naming every letter.</li>
           <li>Recently learned letters appear more often; older letters still surface to prevent forgetting. Adjust this balance with the slider below.</li>
           <li>Go at the learner's pace. Repeat any stage before moving on.</li>
@@ -812,7 +946,7 @@ function renderLetter(d, num) {
   const subs = d.subs.map((s, si) => {
     const rows = s.chunks.map((chunk, ri) => {
       const cells = chunk.map(l =>
-        `<span class="cell${l === d.letter ? ' new' : ''}">${l}</span>`
+        `<span class="cell" onclick="playLetter('${l}')">${l}</span>`
       ).join('');
       return `<div class="row"><div class="row-letters">${cells}</div><div class="row-num">${ri + 1}</div></div>`;
     }).join('');
@@ -827,9 +961,9 @@ function renderLetter(d, num) {
   return `
     <div class="letter-group">
       <div class="letter-hero">
-        <div class="letter-display">${d.letter}</div>
+        <div class="letter-display" onclick="playLetter('${d.letter}')">${d.letter}</div>
         <div class="letter-info">
-          <div class="letter-num">Letter ${num} of 27</div>
+          <div class="letter-num">Letter ${num} of 28</div>
           <div class="letter-name">${d.name}</div>
           <div class="letter-pool">${pool}</div>
         </div>
@@ -889,7 +1023,7 @@ function renderPrintView(data) {
       // Each sub-level: all 5 chunks on one line, separated by |
       const chunks = s.chunks.map(chunk => {
         return chunk.map(l =>
-          l === d.letter ? `<span class="pv-new">${l}</span>` : l
+          l
         ).join('\u2009'); // thin space between letters in a chunk
       }).join('<span class="pv-sep">\u2009|\u2009</span>');
 
