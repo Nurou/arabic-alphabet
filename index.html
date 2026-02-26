@@ -649,8 +649,13 @@ const AUDIO_FILES = {
   "و": "waaw.mp3",
   "هـ": "haa2.mp3",
   "ي": "yaa.mp3",
-  "ء": "hamza.mp3"
+  "ء": "hamza.mp3",
+  "أ": "hamza.mp3",
+  "ؤ": "hamza.mp3",
+  "ئ": "hamza.mp3"
 };
+
+const HAMZA_VARIANTS = ["ء", "أ", "ؤ", "ئ"];
 
 const audioCache = {};
 function playLetter(letter, el) {
@@ -888,16 +893,33 @@ function generateSubLevel(letterIdx, chunkSize, rng) {
   return chunks;
 }
 
+function applyHamzaVariants(subs, rng) {
+  // Collect all rows across sub-levels, assign variants ensuring all 4 appear
+  const variants = shuffle([...HAMZA_VARIANTS], rng);
+  let vi = 0;
+  subs.forEach(s => {
+    s.chunks.forEach(chunk => {
+      const variant = variants[vi % variants.length];
+      vi++;
+      for (let c = 0; c < chunk.length; c++) {
+        if (chunk[c] === "ء") chunk[c] = variant;
+      }
+    });
+  });
+}
+
 function generateAllData(seed) {
   const rng = seededRandom(seed ?? 42);
   const letters = [];
   for (let i = 1; i < ALPHABET.length; i++) {
+    const subs = CHUNK_SIZES.filter(cs => i + 1 >= cs).map(cs => ({ size: cs, chunks: generateSubLevel(i, cs, rng) }));
+    if (ALPHABET[i] === "ء") applyHamzaVariants(subs, rng);
     letters.push({
       idx: i,
       letter: ALPHABET[i],
       name: LETTER_NAMES[i],
       pool: ALPHABET.slice(0, i + 1),
-      subs: CHUNK_SIZES.filter(cs => i + 1 >= cs).map(cs => ({ size: cs, chunks: generateSubLevel(i, cs, rng) }))
+      subs
     });
   }
   return letters;
