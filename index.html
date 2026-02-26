@@ -934,7 +934,7 @@ function generateAllData(seed) {
 // RENDERING
 // ═══════════════════════════════════════════════════════════════
 
-const SUB_NAMES = ['i', 'ii', 'iii'];
+const SUB_NAMES = ['Level 1', 'Level 2', 'Level 3'];
 
 function renderCover() {
   return `
@@ -986,7 +986,7 @@ function renderLetter(d, num) {
 
     return `
       <div class="sublevel">
-        <div class="sublevel-tag">${SUB_NAMES[si]} — size ${s.size}</div>
+        <div class="sublevel-tag">${SUB_NAMES[si]}</div>
         <div class="rows">${rows}</div>
       </div>`;
   }).join('');
