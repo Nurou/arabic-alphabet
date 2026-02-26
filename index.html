@@ -621,35 +621,35 @@ const LETTER_NAMES = [
 ];
 
 const AUDIO_FILES = {
-  "ا": "xuruuf00000011.mp3",
-  "ب": "xuruuf00000073.mp3",
-  "ت": "xuruuf00000152.mp3",
-  "ث": "xuruuf00000213.mp3",
-  "ج": "xuruuf00000276.mp3",
-  "ح": "xuruuf00000331.mp3",
-  "خ": "xuruuf00000384.mp3",
-  "د": "xuruuf00000452.mp3",
-  "ذ": "xuruuf00000520.mp3",
-  "ر": "xuruuf00000587.mp3",
-  "ز": "xuruuf00000658.mp3",
-  "س": "xuruuf00000714.mp3",
-  "ش": "xuruuf00000771.mp3",
-  "ص": "xuruuf00000833.mp3",
-  "ض": "xuruuf00000886.mp3",
-  "ط": "xuruuf00000958.mp3",
-  "ظ": "xuruuf00001012.mp3",
-  "ع": "xuruuf00001067.mp3",
-  "غ": "xuruuf00001117.mp3",
-  "ف": "xuruuf00001173.mp3",
-  "ق": "xuruuf00001227.mp3",
-  "ك": "xuruuf00001275.mp3",
-  "ل": "xuruuf00001325.mp3",
-  "م": "xuruuf00001379.mp3",
-  "ن": "xuruuf00001433.mp3",
-  "و": "xuruuf00001488.mp3",
-  "هـ": "xuruuf00001539.mp3",
-  "ي": "xuruuf00001594.mp3",
-  "ء": "xuruuf00001648.mp3"
+  "ا": "alif.mp3",
+  "ب": "baa.mp3",
+  "ت": "taa.mp3",
+  "ث": "thaa.mp3",
+  "ج": "jiim.mp3",
+  "ح": "haa.mp3",
+  "خ": "khaa.mp3",
+  "د": "daal.mp3",
+  "ذ": "dhaal.mp3",
+  "ر": "raa.mp3",
+  "ز": "zaay.mp3",
+  "س": "siin.mp3",
+  "ش": "shiin.mp3",
+  "ص": "saad.mp3",
+  "ض": "daad.mp3",
+  "ط": "taa2.mp3",
+  "ظ": "dhaa2.mp3",
+  "ع": "ayn.mp3",
+  "غ": "ghayn.mp3",
+  "ف": "faa.mp3",
+  "ق": "qaaf.mp3",
+  "ك": "kaaf.mp3",
+  "ل": "laam.mp3",
+  "م": "miim.mp3",
+  "ن": "nuun.mp3",
+  "و": "waaw.mp3",
+  "هـ": "haa2.mp3",
+  "ي": "yaa.mp3",
+  "ء": "hamza.mp3"
 };
 
 const audioCache = {};
@@ -980,7 +980,7 @@ function renderLetter(d, num) {
 
 function renderReference() {
   const cards = ALPHABET.map((l, i) => `
-    <div class="ref-card">
+    <div class="ref-card" onclick="playLetter('${l}',this)" style="cursor:pointer">
       <div class="ref-card-num">${i === 0 ? 'base' : i}</div>
       <div class="ref-card-letter">${l}</div>
       <div class="ref-card-name">${LETTER_NAMES[i]}</div>
