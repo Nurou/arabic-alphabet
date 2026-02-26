@@ -897,7 +897,7 @@ function generateAllData(seed) {
       letter: ALPHABET[i],
       name: LETTER_NAMES[i],
       pool: ALPHABET.slice(0, i + 1),
-      subs: CHUNK_SIZES.map(cs => ({ size: cs, chunks: generateSubLevel(i, cs, rng) }))
+      subs: CHUNK_SIZES.filter(cs => i + 1 >= cs).map(cs => ({ size: cs, chunks: generateSubLevel(i, cs, rng) }))
     });
   }
   return letters;
