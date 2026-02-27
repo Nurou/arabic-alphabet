@@ -143,6 +143,227 @@
   @media print { .controls-inline { display: none; } }
 
   /* ═══════════════════════════════
+     NAV — floating trigger + drawer
+     ═══════════════════════════════ */
+  .nav-trigger {
+    position: fixed;
+    left: 1rem;
+    bottom: 1.5rem;
+    z-index: 200;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid var(--ink-08);
+    background: oklch(0.98 0.005 90 / 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 12px oklch(0 0 0 / 0.08), 0 0 0 1px oklch(0 0 0 / 0.03);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Amiri', serif;
+    font-size: 1.3rem;
+    color: var(--navy);
+    direction: rtl;
+    transition: transform 0.2s, box-shadow 0.2s;
+    line-height: 1;
+  }
+
+  .nav-trigger:active {
+    transform: scale(0.93);
+  }
+
+  .nav-trigger-sub {
+    position: absolute;
+    bottom: -0.15rem;
+    right: -0.15rem;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.42rem;
+    font-weight: 600;
+    color: white;
+    background: var(--gold);
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0;
+    direction: ltr;
+  }
+
+  .nav-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: oklch(0 0 0 / 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .nav-drawer-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-drawer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 201;
+    width: 100%;
+    max-height: 70vh;
+    background: var(--paper);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 24px oklch(0 0 0 / 0.1);
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-drawer.open {
+    transform: translateY(0);
+  }
+
+  .nav-drawer-handle {
+    display: flex;
+    justify-content: center;
+    padding: 0.6rem 0 0.3rem;
+    flex-shrink: 0;
+  }
+
+  .nav-drawer-handle::after {
+    content: '';
+    width: 2rem;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--ink-20);
+  }
+
+  .nav-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem 0.6rem;
+    flex-shrink: 0;
+  }
+
+  .nav-drawer-title {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-50);
+  }
+
+  .nav-drawer-close {
+    font-size: 1.2rem;
+    color: var(--ink-40);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    line-height: 1;
+  }
+
+  .nav-drawer-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.3rem;
+    padding: 0 1rem 1.5rem;
+    overflow-y: auto;
+    direction: rtl;
+  }
+
+  .nav-drawer-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.12s;
+    background: none;
+    gap: 0.1rem;
+  }
+
+  .nav-drawer-item:active {
+    background: oklch(0.62 0.13 80 / 0.1);
+  }
+
+  .nav-drawer-item.active {
+    border-color: var(--gold);
+    background: oklch(0.62 0.13 80 / 0.06);
+  }
+
+  .nav-drawer-item-letter {
+    font-family: 'Amiri', serif;
+    font-size: 1.4rem;
+    color: var(--navy);
+    line-height: 1.2;
+    direction: rtl;
+  }
+
+  .nav-drawer-item.active .nav-drawer-item-letter {
+    color: var(--gold);
+  }
+
+  .nav-drawer-item-name {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.45rem;
+    color: var(--ink-40);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .nav-drawer-item.active .nav-drawer-item-name {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .nav-drawer-special {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 0.3rem;
+    border-top: 1px solid var(--ink-08);
+    margin-top: 0.2rem;
+    direction: ltr;
+  }
+
+  .nav-drawer-special-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--ink-08);
+    background: none;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--ink-50);
+    text-align: center;
+    transition: all 0.12s;
+  }
+
+  .nav-drawer-special-btn:active {
+    background: oklch(0.62 0.13 80 / 0.1);
+  }
+
+  .nav-drawer-special-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  @media print { .nav-trigger, .nav-drawer, .nav-drawer-backdrop { display: none; } }
+
+  /* ═══════════════════════════════
      COVER
      ═══════════════════════════════ */
   .cover {
@@ -938,7 +1159,7 @@ const SUB_NAMES = ['Level 1', 'Level 2', 'Level 3'];
 
 function renderCover() {
   return `
-    <div class="cover">
+    <div class="cover" id="cover">
       <div class="cover-geo"><svg viewBox="0 0 100 100"><polygon points="50,2 61,22 84,16 78,39 98,50 78,61 84,84 61,78 50,98 39,78 16,84 22,61 2,50 22,39 16,16 39,22" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="50" cy="50" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>
       <div class="cover-rule"></div>
       <div class="cover-title-en">The Arabic Alphabet</div>
@@ -1014,18 +1235,160 @@ function renderReference() {
     </div>`).join('');
 
   return `
-    <div class="reference">
+    <div class="reference" id="reference">
       <h2>Reference</h2>
       <p class="reference-sub">Traditional order, right to left</p>
       <div class="ref-grid">${cards}</div>
     </div>`;
 }
 
+// ── Nav: floating trigger + bottom drawer ──
+
+let navActiveId = 'cover';
+let navActiveLetterIdx = -1; // -1 = cover, 28+ = reference
+
+function renderNav() {
+  // Trigger button (shows current letter)
+  let html = `
+    <button class="nav-trigger" id="nav-trigger" onclick="toggleNavDrawer()">
+      <span id="nav-trigger-letter">ا</span>
+      <span class="nav-trigger-sub" id="nav-trigger-num"></span>
+    </button>
+    <div class="nav-drawer-backdrop" id="nav-backdrop" onclick="closeNavDrawer()"></div>
+    <div class="nav-drawer" id="nav-drawer">
+      <div class="nav-drawer-handle"></div>
+      <div class="nav-drawer-header">
+        <span class="nav-drawer-title">Jump to letter</span>
+        <button class="nav-drawer-close" onclick="closeNavDrawer()">✕</button>
+      </div>
+      <div class="nav-drawer-grid" id="nav-grid">`;
+
+  // Letter items (skip Alif at index 0 — it's the base, not a lesson)
+  for (let i = 1; i < ALPHABET.length; i++) {
+    html += `
+        <div class="nav-drawer-item" data-target="letter-${i - 1}" onclick="navTo('letter-${i - 1}')">
+          <span class="nav-drawer-item-letter">${ALPHABET[i]}</span>
+          <span class="nav-drawer-item-name">${LETTER_NAMES[i]}</span>
+        </div>`;
+  }
+
+  // Special row: Cover + Reference
+  html += `
+        <div class="nav-drawer-special">
+          <button class="nav-drawer-special-btn" data-target="cover" onclick="navTo('cover')">Cover</button>
+          <button class="nav-drawer-special-btn" data-target="reference" onclick="navTo('reference')">Reference</button>
+        </div>`;
+
+  html += `</div></div>`;
+  return html;
+}
+
+function toggleNavDrawer() {
+  const drawer = document.getElementById('nav-drawer');
+  const backdrop = document.getElementById('nav-backdrop');
+  const isOpen = drawer.classList.contains('open');
+  if (isOpen) { closeNavDrawer(); return; }
+  drawer.classList.add('open');
+  backdrop.classList.add('open');
+  updateNavActive();
+}
+
+function closeNavDrawer() {
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('nav-backdrop').classList.remove('open');
+}
+
+function navTo(id) {
+  closeNavDrawer();
+  const el = id === 'cover'
+    ? document.querySelector('.cover')
+    : document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateNavActive() {
+  const grid = document.getElementById('nav-grid');
+  if (!grid) return;
+  grid.querySelectorAll('[data-target]').forEach(el => {
+    el.classList.toggle('active', el.dataset.target === navActiveId);
+  });
+}
+
+function updateTrigger() {
+  const letterEl = document.getElementById('nav-trigger-letter');
+  const numEl = document.getElementById('nav-trigger-num');
+  if (!letterEl || !numEl) return;
+
+  if (navActiveId === 'cover') {
+    letterEl.textContent = 'ا';
+    numEl.textContent = '';
+    numEl.style.display = 'none';
+  } else if (navActiveId === 'reference') {
+    letterEl.style.fontFamily = "'IBM Plex Sans', system-ui";
+    letterEl.style.fontSize = '0.6rem';
+    letterEl.style.fontWeight = '600';
+    letterEl.style.letterSpacing = '0.05em';
+    letterEl.textContent = 'REF';
+    numEl.style.display = 'none';
+  } else {
+    letterEl.style.fontFamily = '';
+    letterEl.style.fontSize = '';
+    letterEl.style.fontWeight = '';
+    letterEl.style.letterSpacing = '';
+    const idx = navActiveLetterIdx;
+    letterEl.textContent = ALPHABET[idx + 1] || '';
+    numEl.textContent = idx + 1;
+    numEl.style.display = 'flex';
+  }
+}
+
+function initScrollSpy() {
+  let ticking = false;
+
+  function update() {
+    const midpoint = window.scrollY + window.innerHeight * 0.35;
+
+    const sections = [];
+    const cover = document.querySelector('.cover');
+    if (cover) sections.push({ id: 'cover', idx: -1, top: cover.offsetTop });
+
+    for (let i = 0; i < ALPHABET.length - 1; i++) {
+      const el = document.getElementById('letter-' + i);
+      if (el) sections.push({ id: 'letter-' + i, idx: i, top: el.offsetTop });
+    }
+
+    const ref = document.getElementById('reference');
+    if (ref) sections.push({ id: 'reference', idx: 99, top: ref.offsetTop });
+
+    let activeId = sections[0]?.id || 'cover';
+    let activeIdx = sections[0]?.idx ?? -1;
+    for (const s of sections) {
+      if (s.top <= midpoint) { activeId = s.id; activeIdx = s.idx; }
+      else break;
+    }
+
+    if (activeId !== navActiveId) {
+      navActiveId = activeId;
+      navActiveLetterIdx = activeIdx;
+      updateTrigger();
+      updateNavActive();
+    }
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+
+  update();
+}
+
 function renderLetters(seed) {
   const data = generateAllData(seed);
   let html = '';
   data.forEach((d, i) => {
-    html += `<div class="page">${renderLetter(d, i + 1)}</div>`;
+    html += `<div class="page" id="letter-${i}" data-letter-idx="${i}">${renderLetter(d, i + 1)}</div>`;
   });
   html += renderReference();
   document.getElementById('letters').innerHTML = html;
@@ -1034,8 +1397,9 @@ function renderLetters(seed) {
 
 function render(seed) {
   document.getElementById('app').innerHTML =
-    renderCover() + '<div id="letters"></div>';
+    renderNav() + renderCover() + '<div id="letters"></div>';
   renderLetters(seed);
+  initScrollSpy();
 }
 
 function renderPrintView(data) {
